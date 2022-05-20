@@ -1,0 +1,27 @@
+<html>
+
+<head>
+    <title>word count</title>
+</head>
+
+<body>
+    <label for="sentence">Sentence</label>
+    <input type="text" id="sentence" />
+    <br />
+    <button onclick="countWords()">Count!</button>
+    <div id="output"></div>
+    <script>
+        function countWords() {
+            let input = document.getElementById('sentence');
+            let sentence = input.value;
+            let output = document.getElementById('output');
+            if (sentence === '') {
+                output.innerText = '0';
+            } else {
+                output.innerText = sentence.split(' ').length;
+            }
+        }
+    </script>
+</body>
+
+</html>

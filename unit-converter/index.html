@@ -1,0 +1,57 @@
+<html>
+
+<head>
+    <title>Unit Converter</title>
+    <script>
+        function fahrenheitToCelsius(fahrenheit) {
+            return (fahrenheit - 32) * (5 / 9);
+        }
+        function celsiusToFahrenheit(celsius) {
+            return (celsius / (5 / 9)) + 32;
+        }
+        function celsiusToKelvin(celsius) {
+            return celsius + 273.15;
+        }
+        function kelvinToCelsius(kelvin) {
+            return kelvin - 273.15;
+        }
+
+        function convert(converter, input, output) {
+            output.value = converter(parseInt(input.value));
+        }
+
+        function celsiusToFahrenheitClicked() {
+            convert(celsiusToFahrenheit, document.getElementById('celsius'), document.getElementById('fahrenheit'));
+        }
+        function fahrenheitToCelsiusClicked() {
+            convert(fahrenheitToCelsius, document.getElementById('fahrenheit'), document.getElementById('celsius'));
+        }
+        function celsiusToKelvinClicked() {
+                convert(celsiusToKelvin, document.getElementById('celsius'), document.getElementById('kelvin'));
+            }
+            function kelvinToCelsiusClicked() {
+                    convert(kelvinToCelsius, document.getElementById('kelvin'), document.getElementById('celsius'));
+                }
+    </script>
+</head>
+
+<body>
+    <label for="celsius">Celsius</label>
+    <input type="number" id="celsius" />
+    <br />
+    <label for="fahrenheit">Fahrenheit</label>
+    <input type="number" id="fahrenheit" />
+    <br />
+    <label for="kelvin">Kelvin</label>
+    <input type="number" id="kelvin" />
+    <br />
+    <button onclick="celsiusToFahrenheitClicked()">Celsius to Fahrenheit</button>
+    <br />
+    <button onclick="fahrenheitToCelsiusClicked()">Fahrenheit to Celsius</button>
+    <br/>
+    <button onclick="celsiusToKelvinClicked()">Celsius to Kelvin</button>
+    <br />
+    <button onclick="kelvinToCelsiusClicked()">Kelvin to Celsius</button>
+</body>
+
+</html>

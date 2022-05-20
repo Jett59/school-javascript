@@ -1,0 +1,59 @@
+<html>
+
+<head>
+    <title>binary-decimal</title>
+    <script>
+        let fromBase = 0;
+        let toBase = 0;
+
+        function setBinary() {
+            fromBase = 2;
+            toBase = 10;
+        }
+        function setDecimal() {
+            fromBase = 10;
+            toBase = 2;
+        }
+
+        function convertClicked() {
+            let inputBox = document.getElementById('inputbox');
+            let outputBox = document.getElementById('outputbox');
+            outputBox.value = convert(inputBox.value);
+        }
+
+        function convert(txt) {
+            if (toBase == 0 || fromBase == 0) {
+                return 'Select a conversion direction';
+            } else {
+                let number = parseInt(txt, fromBase);
+                if (isNaN(number)) {
+                    return 'Invalid input';
+                } else {
+                    return number.toString(toBase);
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h2>Convert</h2>
+    <div>
+        <input type="radio" name="numbersystem" value="binary" id="binary" onclick="setBinary()" />
+        <label for="binary">Binary -> decimal</label>
+        <br />
+        <input type="radio" name="numbersystem" value="decimal" id="decimal" onclick="setDecimal()" />
+        <label for="decimal">Decimal -> binary</label>
+    </div>
+    <div>
+        <label for="inputbox">Input</label>
+        <input type="text" id="inputbox" />
+    </div>
+    <button onclick="convertClicked()">Convert</button>
+    <div>
+        <label for="outputbox">Output</label>
+        <input type="text" id="outputbox" readonly />
+    </div>
+</body>
+
+</html>

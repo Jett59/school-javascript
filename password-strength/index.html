@@ -1,0 +1,43 @@
+<html>
+
+<head>
+    <title>Password strength</title>
+</head>
+
+<body>
+    <label for="password">password</label>
+    <input type="password" id="password" />
+    <br />
+    <button onclick="checkStrength()">Check strength</button>
+    <div id="output"></div>
+    <script>
+        const letterRegex = /[a-zA-Z]/;
+        let digitRegex = /[0-9]/;
+        let symbolRegex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+
+        function checkStrength() {
+            let input = document.getElementById('password');
+            let password = input.value;
+            let long = password.length >= 8;
+            let letters = letterRegex.test(password);
+            let digits = digitRegex.test(password);
+            let symbols = symbolRegex.test(password);
+            let output = document.getElementById('output');
+            if (long && letters && digits && symbols) {
+                output.innerText = 'Secure!';
+            } else if (!long) {
+                output.innerText = `Add ${8 - password.length} letter${password.length == 7 ? '' : 's'}`;
+            } else if (!letters) {
+                output.innerText = 'Add letters';
+            } else if (!digits) {
+                output.innerText = 'Try some digits';
+            } else if (!symbols) {
+                output.innerText = 'Try some symbols';
+            } else {
+                output.innerText = 'What?';
+            }
+        }
+    </script>
+</body>
+
+</html>

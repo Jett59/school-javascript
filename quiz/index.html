@@ -1,0 +1,73 @@
+<html>
+
+<head>
+    <title>Quiz</title>
+    <script src="helper.js"></script>
+    <script src="questions.js"></script>
+    <script>
+    let currentQuestion = 0;
+
+        function loadQuestion() {
+            let question = questions[currentQuestion];
+            shuffle(question.options);
+            let html = `<h2>${question.question}</h2>`;
+            for (var option of question.options) {
+                html += `<div>`;
+                if (option === question.correct) {
+                    html += `<button onclick="correct()">${option}</button>`;
+                } else {
+                    html += `<button onclick="incorrect()">${option}</button>`;
+                }
+                html += `</div>`;
+            }
+            let output = document.getElementById('question');
+            output.innerHTML = html;
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                done();
+            }
+        }
+
+        let numCorrect = 0;
+
+        function correct() {
+            numCorrect++;
+            nextQuestion();
+        }
+        function incorrect() {
+            nextQuestion();
+        }
+
+        window.addEventListener('load', loadQuestion);
+
+        function done() {
+            let scorePercent = Math.round(numCorrect / questions.length * 100);
+            let html = `<h1>Score: ${numCorrect}/${questions.length} (${scorePercent}%)</h1>`;
+            if (numCorrect !== questions.length) {
+                html += `<p>Better luck next time!</p>`;
+            }
+            html += `<h2>Correct answers:</h2>`;
+            for (var question of questions) {
+                html += `<div>`;
+                html += `<h2>${question.question}</h2>`;
+                html += `<p>${question.correct}</p>`;
+                html += `</div>`;
+            }
+            let output = document.getElementById('question');
+            output.innerHTML = html;
+        }
+    </script>
+</head>
+
+<body>
+    <div id="question">
+
+    </div>
+</body>
+
+</html>

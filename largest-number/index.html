@@ -1,0 +1,25 @@
+<html>
+
+<head>
+    <title>Largest number</title>
+</head>
+
+<body>
+    <label for="output">Largest number:</label>
+    <div id="output"></div>
+    <script>
+        let numbers = Array.from({ length: 50 }, () => Math.floor(Math.random() * 65536));
+        numbers.sort((a,b)=>a-b);
+        numbers.reverse();
+
+        let output = document.getElementById('output');
+        let html = `${numbers[0]}`;
+        html += `<ul>`;
+        for (var number of numbers) {
+            html += `<li>${number}</li>`;
+        }
+        html += `</ul`;
+        output.innerHTML = html;
+        </script>
+    </body >
+</html >

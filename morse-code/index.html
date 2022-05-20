@@ -1,0 +1,68 @@
+<html>
+
+<head>
+    <title>Morse code</title>
+    <script>
+        let convertionTable = {
+            a: '.-',
+            b: '-..',
+            c: '-.-.',
+            d: '-..',
+            e: '.',
+            f: '..-.',
+            g: '--.',
+            h: '....',
+            i: '..',
+            j: '.---',
+            k: '-.-',
+            l: '.-..',
+            m: '--',
+            n: '-.',
+            o: '---',
+            p: '.--.',
+            q: '--.-',
+            r: '.-.',
+            s: '...',
+            t: '-',
+            u: '..-',
+            v: '...-',
+            w: '.--',
+            x: '-..-',
+                y: '-.--',
+            z: '--.'
+        };
+        function convertSentence(sentence) {
+            let result = '';
+            let words = sentence.split(' ');
+            for (var word of words) {
+                for (var letter of word) {
+                    if (letter.match(/[a-zA-Z]/)) {
+                        result += convertionTable[letter.toLowerCase()];
+                        result += ' ';
+                    }else {
+                        result += letter;
+                    }
+                }
+                result += '/ ';
+            }
+            return result;
+        }
+
+        function convert() {
+            let input = document.getElementById('input');
+            let result = convertSentence(input.value);
+            let output = document.getElementById('output');
+            output.innerText = result;
+        }
+    </script>
+</head>
+
+<body>
+    <label for="input">Sentence</label>
+    <input type="text" id="input"/>
+    <br/>
+    <button onclick="convert()">Convert</button>
+    <div id="output"></div>
+</body>
+
+</html>
