@@ -17,7 +17,7 @@
         }
 
         function convert(converter, input, output) {
-            output.value = converter(parseInt(input.value));
+            output.value = converter(parseFloat(input.value)).toFixed(5);
         }
 
         function celsiusToFahrenheitClicked() {
