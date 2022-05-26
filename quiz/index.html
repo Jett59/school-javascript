@@ -5,18 +5,20 @@
     <script src="helper.js"></script>
     <script src="questions.js"></script>
     <script>
-    let currentQuestion = 0;
+        let currentQuestion = 0;
 
         function loadQuestion() {
             let question = questions[currentQuestion];
             shuffle(question.options);
             let html = `<h2>${question.question}</h2>`;
             for (var option of question.options) {
+                // Escape the string so it works in an html attribute
+                var escapedOption = option.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
                 html += `<div>`;
                 if (option === question.correct) {
-                    html += `<button onclick="correct()">${option}</button>`;
+                    html += `<button onclick="correct('${escapedOption}')">${option}</button>`;
                 } else {
-                    html += `<button onclick="incorrect()">${option}</button>`;
+                    html += `<button onclick="incorrect('${escapedOption}')">${option}</button>`;
                 }
                 html += `</div>`;
             }
@@ -35,11 +37,13 @@
 
         let numCorrect = 0;
 
-        function correct() {
+        function correct(answer) {
             numCorrect++;
+            questions[currentQuestion].givenAnswer = answer;
             nextQuestion();
         }
-        function incorrect() {
+        function incorrect(answer) {
+            questions[currentQuestion].givenAnswer = answer;
             nextQuestion();
         }
 
@@ -51,15 +55,27 @@
             if (numCorrect !== questions.length) {
                 html += `<p>Better luck next time!</p>`;
             }
-            html += `<h2>Correct answers:</h2>`;
+            html += `<button onclick="retry()">Take it again</button>`;
             for (var question of questions) {
-                html += `<div>`;
                 html += `<h2>${question.question}</h2>`;
-                html += `<p>${question.correct}</p>`;
-                html += `</div>`;
+                if (question.givenAnswer === question.correct) {
+                    html += `<h3>Answer:</h3>`;
+                    html += `<p>${question.correct}</p>`;
+                } else {
+                    html += `<h3>Your answer:</h3>`;
+                    html += `<p>${question.givenAnswer}</p>`;
+                    html += `<h3>Correct answer:</h3>`;
+                    html += `<p>${question.correct}</p>`;
+                }
             }
             let output = document.getElementById('question');
             output.innerHTML = html;
+        }
+
+        function retry() {
+            currentQuestion = 0;
+            numCorrect = 0;
+            loadQuestion();
         }
     </script>
 </head>

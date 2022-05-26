@@ -22,7 +22,12 @@ let questions = [
     {
         question: 'How do you create a string in C?',
         correct: 'const char* string = "Hello World!";',
-        options: ['const char* string = "Hello World!";', 'string = `Hello World!`;', 'string <- "Hello World!";', 'std::string string = "Hello World!";']
+        options: [
+            'const char* string = "Hello World!";',
+            'string = `Hello World!`;',
+            'string <- "Hello World!";',
+            'std::string string = "Hello World!";'
+        ]
     },
     {
         question: 'How do you create a string in C++',
@@ -43,5 +48,15 @@ let questions = [
         question: 'How do you write to the console in Javascript?',
         correct: 'console.log("Hello World!");',
         options: ['System.out.println("Hello World!");', 'println("Hello World!");', 'print("Hello World!")', 'console.log("Hello World!");', 'printf("Hello World!\n");', 'std::cout << "Hello World!" << std::endl;']
+    },
+    {
+        question: 'How large is a long in C?',
+        correct: 'undefined',
+        options: ['8 bits', '16 bits', '32 bits', '64 bits', '128 bits', 'undefined']
+    },
+    {
+        question: 'How large is a long in Java?',
+        correct: '64 bits',
+        options: ['8 bits', '16 bits', '32 bits', '64 bits', '128 bits', 'undefined']
     }
 ];
