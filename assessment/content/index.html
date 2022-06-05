@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Home | Note Manager</title>
+    <title>Home - Note Manager</title>
     <script src="helper.js"></script>
 </head>
 
@@ -18,7 +18,6 @@
                     let noteDiv = document.createElement('div');
                     noteDiv.innerHTML = `
                         <h2>${note.title}</h2>
-                        <p>${note.content}</p>
                         <button onclick="deleteNote(${note.id})">Delete</button>
                     `;
                     output.appendChild(noteDiv);
