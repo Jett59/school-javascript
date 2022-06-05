@@ -44,6 +44,8 @@
             apiFetch(`/api/delete?id=${id}`, response => {
                 if (response.status === 'success') {
                     document.location.reload();
+                } else {
+                    window.location = '/login.html';
                 }
             });
         }
@@ -63,8 +65,9 @@
                         <input type="submit" value="Update Note" />
                     </form>
                 `;
-                    // Put focus so they can start typing straight away.
-                    element.querySelector('textarea').focus();
+                    const textbox = element.querySelector('textarea');
+                    // Put focus on the text box so they can start typing.
+                    textbox.focus();
                 } else {
                     window.location = '/login.html';
                 }

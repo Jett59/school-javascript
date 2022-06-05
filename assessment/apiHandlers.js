@@ -137,10 +137,8 @@ async function handleDelete(request, response, query) {
         });
         response.end('{"status": "success"}');
     } else {
-        response.writeHead(307, {
-            Location: '/login.html'
-        });
-        response.end('Log In!');
+        response.writeHead(403, { 'Content-Type': 'text/plain' });
+        response.end('{"status": "failure"}');
     }
 }
 
