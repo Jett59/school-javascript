@@ -15,3 +15,8 @@ function addLogin(login) {
     return loginsCollection.then(logins => logins.insertOne(login));
 }
 exports.addLogin = addLogin;
+
+function getNotes(username) {
+    return notesCollection.then(notes => notes.find({ "username": username }).toArray());
+}
+exports.getNotes = getNotes;

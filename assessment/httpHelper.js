@@ -10,12 +10,9 @@ function getRequestBody(request) {
     });
     return promise;
 }
-
 exports.getRequestBody = getRequestBody;
 
-// For forms with application/x-www-form-urlencoded content type, the body is a string of the form field1=value1&field2=value2&...
-// This function does not work with anything else!
-function parseFormData(data) {
+function parseUrlEncodedList(data) {
     const parts = data.split('&');
     let keyValuePairs = {};
     for (var part of parts) {
@@ -31,5 +28,30 @@ function parseFormData(data) {
     }
     return keyValuePairs;
 }
+exports.parseUrlEncodedList = parseUrlEncodedList;
 
-exports.parseFormData = parseFormData;
+function getCookies(request) {
+    let cookieList = request.headers.cookie;
+    if (cookieList === undefined) {
+        return {};
+    }
+    const cookies = {};
+    for (var cookie of cookieList.split(';')) {
+        const cookieParts = cookie.split('=');
+        const key = cookieParts[0].trim();
+        const value = decodeURIComponent(cookieParts[1].trim());
+        cookies[key] = value;
+    }
+    return cookies;
+}
+exports.getCookies = getCookies;
+
+function createCookie(key, value, response) {
+    let cookieList = response.getHeader('Set-Cookie');
+    if (cookieList === undefined) {
+        cookieList = [];
+    }
+    cookieList.push(`${key}=${encodeURIComponent(value)}; HttpOnly`);
+    response.setHeader('Set-Cookie', cookieList);
+}
+exports.createCookie = createCookie;

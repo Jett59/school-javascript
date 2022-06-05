@@ -1,20 +1,33 @@
 <html>
 
 <head>
-    <title>Log In - Note Manager</title>
+    <title>Home | Note Manager</title>
+    <script src="helper.js"></script>
 </head>
 
 <body>
-    <form action="/api/login" method="post" enctype="application/x-www-form-urlencoded">
-        <input type="text" name="username" placeholder="Username">
-        <br />
-        <input type="password" name="password" placeholder="Password">
-        <br />
-        <input type="submit" value="Login">
-    </form>
-    <p>
-        Not got an account yet? <a href="/register.html">Register here!</a>
-    </p>
+    <h1>Welcome to your notes!</h1>
+    <div id="notes">Loading...</div>
+    <script>
+        apiFetch('/api/list', response => {
+            if (response.status === 'success') {
+                const notes = response.notes;
+                const output = document.getElementById('notes');
+                output.innerHTML = '';
+                for (let note of notes) {
+                    let noteDiv = document.createElement('div');
+                    noteDiv.innerHTML = `
+                        <h2>${note.title}</h2>
+                        <p>${note.content}</p>
+                        <button onclick="deleteNote(${note.id})">Delete</button>
+                    `;
+                    output.appendChild(noteDiv);
+                }
+            } else {
+                window.location = '/login.html';
+            }
+        });
+    </script>
 </body>
 
 </html>

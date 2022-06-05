@@ -1,56 +1,83 @@
 const httpHelper = require('./httpHelper.js');
 
 const login = require('./login.js');
+const session = require('./session.js');
+const database = require('./database.js');
 
-async function handleRequest(request, result, url) {
+async function handleRequest(request, response, url) {
     const pathname = url.pathname;
     const body = await httpHelper.getRequestBody(request);
     switch (pathname) {
         case '/api/login': {
-            handleLogin(body, result);
+            handleLogin(body, response);
             break;
         }
         case '/api/register': {
-            handleRegister(body, result);
+            handleRegister(body, response);
             break;
-            }
+        }
+        case '/api/list': {
+            handleList(request, response);
+            break;
+        }
         default:
-            result.writeHead(404, { 'Content-Type': 'text/plain' });
-            result.end('404 not found');
+            response.writeHead(404, { 'Content-Type': 'text/plain' });
+            response.end('404 not found');
     }
 }
-
 exports.handle = handleRequest;
 
-async function handleLogin(body, result) {
-    const inputFields = httpHelper.parseFormData(body);
+function logIn(username, response) {
+    httpHelper.createCookie('session', session.createSession(username), response);
+}
+
+async function handleLogin(body, response) {
+    const inputFields = httpHelper.parseUrlEncodedList(body);
     const { username, password } = inputFields;
     const loginStatus = await login.checkPassword(username, password);
     let redirectUrl = '';
     if (loginStatus) {
-        redirectUrl = '/yay.html';
+        redirectUrl = '/index.html';
+        logIn(username, response);
     } else {
         redirectUrl = '/index.html';
     }
-    result.writeHead(307, {
+    response.writeHead(307, {
         Location: redirectUrl
     });
-    result.end('Off you go!');
+    response.end('Off you go!');
 }
 
-async function handleRegister(body, result) {
-    const inputFields = httpHelper.parseFormData(body);
-    const { username, password } = inputFields;    
+async function handleRegister(body, response) {
+    const inputFields = httpHelper.parseUrlEncodedList(body);
+    const { username, password } = inputFields;
     const registerStatus = await login.createLogin(username, password);
     let redirectUrl = '';
     if (registerStatus) {
-        redirectUrl = '/yay.html';
+        redirectUrl = '/index.html';
+        logIn(username, response);
     } else {
         redirectUrl = '/register.html';
     }
-    // Add a cookie (loggedin = true)
-    result.writeHead(307, {
+    response.writeHead(307, {
         Location: redirectUrl
     });
-    result.end('Off you go!');
+    response.end('Off you go!');
+}
+
+async function handleList(request, response) {
+    const cookies = httpHelper.getCookies(request);
+    const sessionId = cookies['session'];
+    const username = session.getUsername(sessionId);
+    if (username !== undefined) {
+        const list = await database.getNotes(username);
+        const responseObject = { status: 'success', notes: list };
+        response.writeHead(200, {
+            'Content-Type': 'application/json'
+        });
+        response.end(JSON.stringify(responseObject));
+    } else {
+        response.writeHead(404, { 'Content-Type': 'text/plain' });
+        response.end('{"status": "failure"}');
+    }
 }
