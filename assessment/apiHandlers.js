@@ -30,7 +30,7 @@ async function handleLogin(body, result) {
     if (loginStatus) {
         redirectUrl = '/yay.html';
     } else {
-        redirectUrl = '/ohno.html';
+        redirectUrl = '/index.html';
     }
     result.writeHead(307, {
         Location: redirectUrl
@@ -46,7 +46,7 @@ async function handleRegister(body, result) {
     if (registerStatus) {
         redirectUrl = '/yay.html';
     } else {
-        redirectUrl = '/ohno.html';
+        redirectUrl = '/register.html';
     }
     // Add a cookie (loggedin = true)
     result.writeHead(307, {
