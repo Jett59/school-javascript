@@ -20,6 +20,10 @@ async function handleRequest(request, response, url) {
             handleList(request, response);
             break;
         }
+        case '/api/create': {
+            handleCreate(request, response, body);
+            break;
+        }
         default:
             response.writeHead(404, { 'Content-Type': 'text/plain' });
             response.end('404 not found');
@@ -79,5 +83,25 @@ async function handleList(request, response) {
     } else {
         response.writeHead(404, { 'Content-Type': 'text/plain' });
         response.end('{"status": "failure"}');
+    }
+}
+
+async function handleCreate(request, response, body) {
+    const cookies = httpHelper.getCookies(request);
+    const sessionId = cookies['session'];
+    const username = session.getUsername(sessionId);
+    if (username !== undefined) {
+        const inputFields = httpHelper.parseUrlEncodedList(body);
+        const title = inputFields.title;
+        await database.createNote(username, title);
+        response.writeHead(307, {
+            Location: '/index.html'
+        });
+        response.end('Off you go!');
+    } else {
+        response.writeHead(307, {
+            Location: '/login.html'
+        });
+        response.end('Log In!');
     }
 }

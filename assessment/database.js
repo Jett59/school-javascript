@@ -25,3 +25,8 @@ function getNotes(username) {
     return notesCollection.then(notes => notes.find({ "username": username }).toArray());
 }
 exports.getNotes = getNotes;
+
+function createNote(username, title) {
+    return notesCollection.then(notes => notes.insertOne({ "title": title, "username": username, "content": "" }));
+}
+exports.createNote = createNote;

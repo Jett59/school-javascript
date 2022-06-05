@@ -6,11 +6,11 @@
 
 <body>
     <form action="/api/login" method="post" enctype="application/x-www-form-urlencoded">
-        <input type="text" name="username" placeholder="Username">
+        <input type="text" name="username" placeholder="Username" required/>
         <br />
-        <input type="password" name="password" placeholder="Password">
+        <input type="password" name="password" placeholder="Password" required/>
         <br />
-        <input type="submit" value="Login">
+        <input type="submit" value="Login"/>
     </form>
     <p>
         Not got an account yet? <a href="/register.html">Register here!</a>

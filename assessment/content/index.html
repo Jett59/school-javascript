@@ -8,19 +8,31 @@
 <body>
     <h1>Welcome to your notes!</h1>
     <div id="notes">Loading...</div>
+    <!-- New Note form-->
+    <form action="/api/create" method="post" enctype="application/x-www-form-urlencoded">
+        <input type="text" name="title" placeholder="Title" required />
+        <input type="submit" value="Create Note" />
+    </form>
     <script>
         apiFetch('/api/list', response => {
             if (response.status === 'success') {
                 const notes = response.notes;
                 const output = document.getElementById('notes');
                 output.innerHTML = '';
-                for (let note of notes) {
-                    let noteDiv = document.createElement('div');
-                    noteDiv.innerHTML = `
+                if (notes.length > 0) {
+                    for (let note of notes) {
+                        let noteDiv = document.createElement('div');
+                        noteDiv.innerHTML = `
                         <h2>${note.title}</h2>
                         <button onclick="deleteNote(${note.id})">Delete</button>
                     `;
-                    output.appendChild(noteDiv);
+                        output.appendChild(noteDiv);
+                    }
+                } else {
+                    output.innerHTML = `
+                    <h2>No notes yet!</h2>
+                    <p>Create one by clicking the button below!</p>
+                `;
                 }
             } else {
                 window.location = '/login.html';
