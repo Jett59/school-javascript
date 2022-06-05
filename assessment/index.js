@@ -5,7 +5,7 @@ const apiHandlers = require('./apiHandlers.js');
 const staticHandler = require('./staticHandler.js');
 
 function serverLoop(request, result) {
-    const requestUrl = new url.URL(request.url, 'http://localhost:8080');
+    const requestUrl = url.parse(request.url, true);
     const pathname = requestUrl.pathname;
     console.log(pathname);
 

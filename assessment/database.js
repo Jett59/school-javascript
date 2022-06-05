@@ -30,3 +30,18 @@ function createNote(username, title) {
     return notesCollection.then(notes => notes.insertOne({ "title": title, "username": username, "content": "" }));
 }
 exports.createNote = createNote;
+
+function deleteNote(username, id) {
+    return notesCollection.then(notes => notes.deleteOne({ "_id": new mongodb.ObjectId(id), "username": username }));
+}
+exports.deleteNote = deleteNote;
+
+function getNote(username, id) {
+    return notesCollection.then(notes => notes.findOne({ "_id": new mongodb.ObjectId(id), "username": username }));
+}
+exports.getNote = getNote;
+
+function updateNote(username, id, newTitle, newContent) {
+    return notesCollection.then(notes => notes.updateOne({ "_id": new mongodb.ObjectId(id), "username": username }, { $set: { "title": newTitle, "content": newContent } }));
+}
+exports.updateNote = updateNote;

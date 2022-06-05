@@ -12,14 +12,19 @@ function getRequestBody(request) {
 }
 exports.getRequestBody = getRequestBody;
 
+// Wrapps decodeUriComponent but handles + characters.
+function decodeUriPart(part) {
+    return decodeURIComponent(part.trim().replace(/\+/g, '%20'));
+}
+
 function parseUrlEncodedList(data) {
     const parts = data.split('&');
     let keyValuePairs = {};
     for (var part of parts) {
         if (part.includes('=')) {
             const keyValue = part.split('=');
-            const key = decodeURI(keyValue[0]);
-            const value = decodeURI(keyValue[1]);
+            const key = keyValue[0];
+            const value = decodeUriPart(keyValue[1]);
             keyValuePairs[key] = value;
         } else {
             const key = decodeURI(part);
