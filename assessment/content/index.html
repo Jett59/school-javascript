@@ -3,6 +3,13 @@
 <head>
     <title>Home - Note Manager</title>
     <script src="helper.js"></script>
+    <script>
+        // Refresh the page so that the "confirm form resubmition" dialogue doesn't appear.
+        // https://stackoverflow.com/a/59301873
+        if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+    </script>
 </head>
 
 <body>
