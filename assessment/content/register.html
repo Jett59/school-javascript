@@ -2,6 +2,7 @@
 
 <head>
     <title>Register - Note Manager</title>
+    <script src="errors.js"></script>
 </head>
 
 <body>
@@ -12,6 +13,13 @@
         <br />
         <input type="submit" value="Register">
     </form>
+    <p id="error"></p>
+    <script>
+        if (isAccessDenied()) {
+                const errorBox = document.getElementById('error');
+                errorBox.innerHTML = 'Username already in use';
+            }
+    </script>
 </body>
 
 </html>

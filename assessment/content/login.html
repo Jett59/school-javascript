@@ -2,6 +2,7 @@
 
 <head>
     <title>Log In - Note Manager</title>
+    <script src="errors.js"></script>
 </head>
 
 <body>
@@ -12,9 +13,17 @@
         <br />
         <input type="submit" value="Login"/>
     </form>
+    <p id="error"></p>
     <p>
         Not got an account yet? <a href="/register.html">Register here!</a>
     </p>
+
+    <script>
+        if (isAccessDenied()) {
+            const errorBox = document.getElementById('error');
+            errorBox.innerHTML = 'Invalid username or password';
+        }
+    </script>
 </body>
 
 </html>

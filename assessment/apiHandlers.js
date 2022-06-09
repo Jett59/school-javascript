@@ -56,7 +56,7 @@ async function handleLogin(body, response) {
         redirectUrl = '/index.html';
         logIn(username, response);
     } else {
-        redirectUrl = '/login.html';
+        redirectUrl = '/login.html?error=access+denied';
     }
     response.writeHead(307, {
         Location: redirectUrl
@@ -73,7 +73,7 @@ async function handleRegister(body, response) {
         redirectUrl = '/index.html';
         logIn(username, response);
     } else {
-        redirectUrl = '/register.html';
+        redirectUrl = '/register.html?error=already+used';
     }
     response.writeHead(307, {
         Location: redirectUrl
@@ -100,7 +100,9 @@ async function handleList(request, response) {
         });
         response.end(JSON.stringify(responseObject));
     } else {
-        response.writeHead(403, { 'Content-Type': 'text/plain' });
+        response.writeHead(403, {
+            'Content-Type': 'text/plain'
+        });
         response.end('{"status": "failure"}');
     }
 }
@@ -176,14 +178,14 @@ async function handleUpdate(request, response, body) {
         const inputFields = httpHelper.parseUrlEncodedList(body);
         const { id, title, content } = inputFields;
         await database.updateNote(username, id, title, content);
-        response.writeHead(307, {
-            Location: '/index.html'
+        response.writeHead(200, {
+            'Content-Type': 'application/json'
         });
-        response.end('Off you go!');
+        response.end('{"status": "success"}');
     } else {
-        response.writeHead(307, {
-            Location: '/login.html'
+        response.writeHead(403, {
+            'Content-type': 'application/json'
         });
-        response.end('Log In!');
+        response.end('{"status": "access denied"}');
     }
 }

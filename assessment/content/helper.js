@@ -1,5 +1,5 @@
-function apiFetch(url, callback) {
-    fetch(url).then(response => response.json()).then(callback);
+function apiFetch(url, callback, options={method: "GET"}) {
+    fetch(url, options).then(response => response.json()).then(callback);
 }
 
 function debounce(delay = 250) {
