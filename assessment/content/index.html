@@ -67,6 +67,7 @@
                     element.id = `edit-${note.id}`;
                     element.innerHTML = `
                         <input type="text" id="edit-title-${note.id}" value="${note.title}" required />
+                        <br/>
                         <textarea id="edit-content-${note.id}">${note.content}</textarea>
                         <button onclick="closeEdit('${note.id}')">Done</button>
                 `;
@@ -98,9 +99,9 @@
                     body: `id=${encodeURIComponent(id)}&title=${encodeURIComponent(titleBox.value)}&content=${encodeURIComponent(contentBox.value)}`
                 });
             };
-            const saveDebounce = debounce(1000);
-            titleBox.addEventListener('change', ()=>saveDebounce(saveHandler));
-            contentBox.addEventListener('change', () => saveDebounce(saveHandler));
+            const saveThrottle = throttle(1000, saveHandler);
+            titleBox.addEventListener('input', ()=>saveThrottle());
+            contentBox.addEventListener('input', () => saveThrottle());
         }
 
         function closeEdit(id) {
