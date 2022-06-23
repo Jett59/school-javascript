@@ -88,18 +88,20 @@
             const titleBox = document.getElementById(`edit-title-${id}`);
             const contentBox = document.getElementById(`edit-content-${id}`);
             const saveHandler = () => {
-                apiFetch('/api/update', response => {
-                    if (response.status === "access denied") {
-                        window.location = '/login.html';
-                    }
-                }, {
-                    method: "POST",
-                    Headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: `id=${encodeURIComponent(id)}&title=${encodeURIComponent(titleBox.value)}&content=${encodeURIComponent(contentBox.value)}`
-                });
+                if (titleBox.value !== '') {
+                    apiFetch('/api/update', response => {
+                        if (response.status === "access denied") {
+                            window.location = '/login.html';
+                        }
+                    }, {
+                        method: "POST",
+                        Headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: `id=${encodeURIComponent(id)}&title=${encodeURIComponent(titleBox.value)}&content=${encodeURIComponent(contentBox.value)}`
+                    });
+                }
             };
             const saveThrottle = throttle(1000, saveHandler);
             titleBox.addEventListener('input', () => saveThrottle());
