@@ -91,7 +91,8 @@ async function handleList(request, response) {
         for (var note of rawList) {
             list.push({
                 id: note._id,
-                title: note.title
+                title: note.title,
+                content: note.content
             });
         }
         const responseObject = { status: 'success', notes: list };

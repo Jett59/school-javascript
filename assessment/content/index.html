@@ -31,6 +31,7 @@
                         noteDiv.id = 'note' + note.id;
                         noteDiv.innerHTML = `
                         <h2 id="title-${note.id}">${note.title}</h2>
+                        <p>${note.content.substring(0, 100)}</p>
                         <button onclick="editNote('${noteDiv.id}', '${note.id}')">Edit</button>
                         <button onclick="deleteNote('${note.id}')">Delete</button>
                     `;
