@@ -58,28 +58,30 @@
         }
 
         function editNote(parentElementId, noteId) {
-            const parentElement = document.getElementById(parentElementId);
-            const element = document.createElement('div');
-            parentElement.appendChild(element);
-            apiFetch(`/api/get?id=${noteId}`, response => {
-                if (response.status === 'success') {
-                    const note = response.note;
-                    element.id = `edit-${note.id}`;
-                    element.innerHTML = `
+            if (document.getElementById(`edit-${noteId}`) === null) {
+                const parentElement = document.getElementById(parentElementId);
+                const element = document.createElement('div');
+                parentElement.appendChild(element);
+                apiFetch(`/api/get?id=${noteId}`, response => {
+                    if (response.status === 'success') {
+                        const note = response.note;
+                        element.id = `edit-${noteId}`;
+                        element.innerHTML = `
                         <input type="text" id="edit-title-${note.id}" value="${note.title}" required />
                         <br/>
                         <textarea id="edit-content-${note.id}">${note.content}</textarea>
                         <button onclick="closeEdit('${note.id}')">Done</button>
                 `;
-                    // Set up autosave for the title and content.
-                    initAutosave(note.id);
-                    const textbox = element.querySelector('textarea');
-                    // Put focus on the text box so they can start typing.
-                    textbox.focus();
-                } else {
-                    window.location = '/login.html';
-                }
-            });
+                        // Set up autosave for the title and content.
+                        initAutosave(note.id);
+                        const textbox = element.querySelector('textarea');
+                        // Put focus on the text box so they can start typing.
+                        textbox.focus();
+                    } else {
+                        window.location = '/login.html';
+                    }
+                });
+            }
         }
 
         function initAutosave(id) {
@@ -100,7 +102,7 @@
                 });
             };
             const saveThrottle = throttle(1000, saveHandler);
-            titleBox.addEventListener('input', ()=>saveThrottle());
+            titleBox.addEventListener('input', () => saveThrottle());
             contentBox.addEventListener('input', () => saveThrottle());
         }
 
