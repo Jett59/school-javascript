@@ -1,4 +1,4 @@
-function getRequestBody(request) {
+export function getRequestBody(request) {
     let content = '';
     request.on('data', chunk => {
         content += chunk;
@@ -10,14 +10,13 @@ function getRequestBody(request) {
     });
     return promise;
 }
-exports.getRequestBody = getRequestBody;
 
 // Wrapps decodeUriComponent but handles + characters.
-function decodeUriPart(part) {
+export function decodeUriPart(part) {
     return decodeURIComponent(part.trim().replace(/\+/g, '%20'));
 }
 
-function parseUrlEncodedList(data) {
+export function parseUrlEncodedList(data) {
     const parts = data.split('&');
     let keyValuePairs = {};
     for (var part of parts) {
@@ -33,9 +32,8 @@ function parseUrlEncodedList(data) {
     }
     return keyValuePairs;
 }
-exports.parseUrlEncodedList = parseUrlEncodedList;
 
-function getCookies(request) {
+export function getCookies(request) {
     let cookieList = request.headers.cookie;
     if (cookieList === undefined) {
         return {};
@@ -49,9 +47,8 @@ function getCookies(request) {
     }
     return cookies;
 }
-exports.getCookies = getCookies;
 
-function createCookie(key, value, response) {
+export function createCookie(key, value, response) {
     let cookieList = response.getHeader('Set-Cookie');
     if (cookieList === undefined) {
         cookieList = [];
@@ -59,4 +56,3 @@ function createCookie(key, value, response) {
     cookieList.push(`${key}=${encodeURIComponent(value)}; HttpOnly`);
     response.setHeader('Set-Cookie', cookieList);
 }
-exports.createCookie = createCookie;

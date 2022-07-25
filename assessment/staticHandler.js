@@ -1,7 +1,7 @@
-const fs = require('fs');
-const path = require('path');
+import * as fs from 'fs';
+import * as path from 'path';
 
-function handleRequest(request, result, url) {
+export function handle(request, result, url) {
     let pathname = url.pathname;
     if (pathname === '/') {
         pathname = '/index.html';
@@ -17,8 +17,6 @@ function handleRequest(request, result, url) {
         }
     });
 }
-
-exports.handle = handleRequest;
 
 // Find the content-type value for the file extension.
 // If the file extension is not found, return 'text/plain'

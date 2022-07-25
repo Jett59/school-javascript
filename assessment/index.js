@@ -1,8 +1,8 @@
-const http = require('http');
-const url = require('url');
+import http from 'http';
+import url from 'url';
 
-const apiHandlers = require('./apiHandlers.js');
-const staticHandler = require('./staticHandler.js');
+import * as apiHandlers from './apiHandlers.js';
+import * as staticHandler from './staticHandler.js';
 
 function serverLoop(request, result) {
     const requestUrl = url.parse(request.url, true);

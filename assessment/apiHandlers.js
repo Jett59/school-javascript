@@ -1,10 +1,10 @@
-const httpHelper = require('./httpHelper.js');
+import * as httpHelper from './httpHelper.js';
 
-const login = require('./login.js');
-const session = require('./session.js');
-const database = require('./database.js');
+import * as login from './login.js';
+import * as session from './session.js';
+import * as database from './database.js';
 
-async function handleRequest(request, response, url) {
+export async function handle(request, response, url) {
     const pathname = url.pathname;
     const body = await httpHelper.getRequestBody(request);
     switch (pathname) {
@@ -41,7 +41,6 @@ async function handleRequest(request, response, url) {
             response.end('404 not found');
     }
 }
-exports.handle = handleRequest;
 
 function logIn(username, response) {
     httpHelper.createCookie('session', session.createSession(username), response);
@@ -58,7 +57,7 @@ async function handleLogin(body, response) {
     } else {
         redirectUrl = '/login.html?error=access+denied';
     }
-    response.writeHead(307, {
+    response.writeHead(303, {
         Location: redirectUrl
     });
     response.end('Off you go!');
@@ -75,7 +74,7 @@ async function handleRegister(body, response) {
     } else {
         redirectUrl = '/register.html?error=already+used';
     }
-    response.writeHead(307, {
+    response.writeHead(303, {
         Location: redirectUrl
     });
     response.end('Off you go!');
@@ -115,13 +114,13 @@ async function handleCreate(request, response, body) {
     if (username !== undefined) {
         const inputFields = httpHelper.parseUrlEncodedList(body);
         const title = inputFields.title;
-        await database.createNote(username, title);
-        response.writeHead(307, {
-            Location: '/index.html'
+        const noteId = await database.createNote(username, title);
+        response.writeHead(201, {
+            'Content-Type': 'application/json'
         });
-        response.end('Off you go!');
+        response.end(`{"id": "${noteId}"}`);
     } else {
-        response.writeHead(307, {
+        response.writeHead(303, {
             Location: '/login.html'
         });
         response.end('Log In!');

@@ -1,5 +1,4 @@
-const exp = require('constants');
-const crypto = require('crypto');
+import crypto from 'crypto';
 
 function hashPassword(password, salt) {
     const saltedPassword = password + salt;
@@ -14,9 +13,9 @@ function createSalt() {
     return crypto.randomBytes(saltLength).toString('base64');
 }
 
-const database = require('./database.js');
+import * as database from './database.js';
 
-async function checkPassword(username, password) {
+export async function checkPassword(username, password) {
     const login = await database.getLogin(username);
     if (login !== null) {
         const expectedHash = login.passwordHash;
@@ -26,9 +25,8 @@ async function checkPassword(username, password) {
         return false;
     }
 }
-exports.checkPassword = checkPassword;
 
-async function createLogin(username, password) {
+export async function createLogin(username, password) {
     const existingLogin = await database.getLogin(username);
     if (existingLogin === null) {
         const salt = createSalt();
@@ -44,4 +42,3 @@ async function createLogin(username, password) {
         return false;
     }
 }
-exports.createLogin = createLogin;

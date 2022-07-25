@@ -1,10 +1,10 @@
-const crypto = require('crypto');
+import crypto from 'crypto';
 
 const sessionTimeout = 1000 * 60 * 60;
 
 let sessions = {};
 
-function createSession(username) {
+export function createSession(username) {
     let id = crypto.randomUUID();
     sessions[id] = username;
     setTimeout(() => {
@@ -12,10 +12,8 @@ function createSession(username) {
     }, sessionTimeout);
     return id;
 }
-exports.createSession = createSession;
 
 // Gets the username for the given session id or undefined if the session id is invalid.
-function getUsername(id) {
+export function getUsername(id) {
     return sessions[id];
 }
-exports.getUsername = getUsername;

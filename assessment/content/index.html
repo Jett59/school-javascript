@@ -15,8 +15,8 @@
 <body>
     <h1>Welcome to your notes!</h1>
     <div id="notes">Loading...</div>
-    <form action="/api/create" method="post" enctype="application/x-www-form-urlencoded">
-        <input type="text" name="title" placeholder="Title" required />
+    <form onsubmit="handleCreate(event)" id="create-form">
+        <input type="text" name="title" id="titleBox" placeholder="Title" required />
         <input type="submit" value="Create Note" />
     </form>
     <script>
@@ -27,15 +27,7 @@
                 output.innerHTML = '';
                 if (notes.length > 0) {
                     for (let note of notes) {
-                        let noteDiv = document.createElement('div');
-                        noteDiv.id = 'note' + note.id;
-                        noteDiv.innerHTML = `
-                        <h2 id="title-${note.id}">${note.title}</h2>
-                        <p>${note.content.substring(0, 100)}</p>
-                        <button onclick="editNote('${noteDiv.id}', '${note.id}')">Edit</button>
-                        <button onclick="deleteNote('${note.id}')">Delete</button>
-                    `;
-                        output.appendChild(noteDiv);
+                        addNote(note);
                     }
                 } else {
                     output.innerHTML = `
@@ -47,6 +39,43 @@
                 window.location = '/login.html';
             }
         });
+
+        let notes = [];
+
+        function addNote(note) {
+            const output = document.getElementById('notes');
+            if (notes.length === 0) {
+                output.innerHTML = '';
+            }
+            notes.push(note);
+            let noteDiv = document.createElement('div');
+            noteDiv.id = 'note' + note.id;
+            noteDiv.innerHTML = `
+                        <h2 id="title-${note.id}">${note.title}</h2>
+                        <p>${note.content.substring(0, 100)}</p>
+                        <button onclick="editNote('${noteDiv.id}', '${note.id}')">Edit</button>
+                        <button onclick="deleteNote('${note.id}')">Delete</button>
+                    `;
+            output.appendChild(noteDiv);
+        }
+
+        function handleCreate(event) {
+            event.preventDefault();
+            const title = document.getElementById('titleBox').value;
+            document.getElementById('create-form').reset();
+            apiFetch('/api/create', response => {
+                const id = response.id;
+                addNote({
+                    id: id,
+                    title: title,
+                    content: ''
+                });
+                editNote(`note${id}`, id);
+            }, {
+                method: 'POST',
+                body: `title=${title}`
+            });
+        }
 
         function deleteNote(id) {
             apiFetch(`/api/delete?id=${id}`, response => {
@@ -68,7 +97,7 @@
                         const note = response.note;
                         element.id = `edit-${noteId}`;
                         element.innerHTML = `
-                        <input type="text" id="edit-title-${note.id}" value="${note.title}" required />
+                        <input type="text" id="edit-title-${note.id}" value="${note.title.replace(/\"/g, '&quot;')}" required />
                         <br/>
                         <textarea id="edit-content-${note.id}">${note.content}</textarea>
                         <button onclick="closeEdit('${note.id}')">Done</button>
@@ -113,7 +142,9 @@
             const titleBox = document.getElementById(`edit-title-${id}`);
             const title = titleBox.value;
             document.getElementById(`edit-${id}`).remove();
-            document.getElementById(`title-${id}`).innerHTML = title;
+            if (title.length > 0) {
+                document.getElementById(`title-${id}`).innerHTML = title;
+            }
         }
     </script>
 </body>
