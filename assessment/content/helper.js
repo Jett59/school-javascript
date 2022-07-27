@@ -1,4 +1,4 @@
-function apiFetch(url, callback, options={method: "GET"}) {
+function apiFetch(url, callback, options = { method: "GET" }) {
     fetch(url, options).then(response => response.json()).then(callback);
 }
 
