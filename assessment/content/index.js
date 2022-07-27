@@ -22,7 +22,9 @@ function updateNote(note) {
     const noteDiv = document.getElementById(`note${note.id}`);
     noteDiv.innerHTML = `
                         <h2 id="title-${note.id}">${htmlEscape(note.title)}</h2>
-                        <a href="data:text/plain;charset=utf-8,${htmlEscape(note.content)}" download="${htmlEscape(note.title)}.txt">Download</a>
+                        <div>
+                            <a href="data:text/plain;charset=utf-8,${htmlEscape(note.content)}" download="${htmlEscape(note.title)}.txt">Download</a>
+                        </div>
                         <p>${htmlEscape(note.content.substring(0, 100))}</p>
                         <button onclick="editNote('${noteDiv.id}', '${note.id}')">Edit</button>
                         <button onclick="deleteNote('${note.id}')">Delete</button>
